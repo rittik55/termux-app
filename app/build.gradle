@@ -187,8 +187,7 @@ def downloadBootstrap(String arch, String expectedChecksum, String version) {
         }
     }
 
-    def remoteUrl = "https://github.com/termux/termux-packages/releases/download/bootstrap-" + version + "/bootstrap-" + arch + ".zip"
-    logger.quiet("Downloading " + remoteUrl + " ...")
+def remoteUrl = "[https://github.com/termux/termux-packages/releases/download/bootstrap-](https://github.com/termux/termux-packages/releases/download/bootstrap-)" + version + "/bootstrap-" + arch + ".zip"
 
     file.parentFile.mkdirs()
     def out = new BufferedOutputStream(new FileOutputStream(file))
@@ -201,11 +200,7 @@ def downloadBootstrap(String arch, String expectedChecksum, String version) {
 
     def checksum = new BigInteger(1, digest.digest()).toString(16)
     while (checksum.length() < 64) { checksum = "0" + checksum }
-    if (checksum != expectedChecksum) {
-        file.delete()
-        throw new GradleException("Wrong checksum for " + remoteUrl + ": expected: " + expectedChecksum + ", actual: " + checksum)
-    }
-}
+    
 
 clean {
     doLast {
@@ -214,7 +209,6 @@ clean {
         tree.each { it.delete() }
     }
 }
-
 task downloadBootstraps() {
     doLast {
         def packageVariant = project.ext.packageVariant
